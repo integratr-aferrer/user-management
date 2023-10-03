@@ -1,0 +1,53 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app-api
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-local-ws
+  webserver:
+    image: nginx:alpine
+    container_name: ${COMPOSE_PROJECT_NAME}-webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "${COMPOSE_APP_PORT}:8000"
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-local-ws
+    environment:
+      - TZ=Asia/Manila
+  database:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: postgres:11.4
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      TZ: "Asia/Manila"
+      PGTZ: "Asia/Manila"
+    ports:
+      - "${COMPOSE_DB_PORT}:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - app-local-ws
+
+networks:
+  app-local-ws:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
