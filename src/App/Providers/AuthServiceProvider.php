@@ -2,7 +2,7 @@
 
 namespace UserPackage\App\Providers;
 
-use App\Models\User;
+use UserPackage\App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 

@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('password');
-            $table->morphs('profile');
+            $table->string('profile_type');
+            $table->uuid('profile_id');
             $table->string('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['id', 'status', 'created_at', 'updated_at']);
+            $table->index(['id', 'status', 'created_at', 'updated_at', 'profile_id']);
         });
     }
 

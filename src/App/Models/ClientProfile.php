@@ -13,6 +13,10 @@ class ClientProfile extends Model
     public const RESOURCE_KEY = 'client_profiles';
 
     protected $guarded = [];
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
      * Profile Relation

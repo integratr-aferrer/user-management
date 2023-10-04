@@ -63,6 +63,7 @@ $app->configure('app');
 $app->configure('api');
 $app->configure('database');
 $app->configure('baserepository');
+$app->configure('jwt');
 
 /*
 |--------------------------------------------------------------------------
@@ -76,12 +77,12 @@ $app->configure('baserepository');
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+//     'auth' => UserPackage\App\Http\Middleware\Authenticate::class,
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => UserPackage\App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ $app->register(UserPackage\App\Providers\AppServiceProvider::class);
 $app->register(UserPackage\App\Providers\AuthServiceProvider::class);
 $app->register(UserPackage\App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
